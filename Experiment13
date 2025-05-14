@@ -1,0 +1,39 @@
+#include <stdio.h>
+#define SIZE 100
+
+int bst[SIZE] = {-1}; // -1 means empty
+
+void insert(int i, int val) {
+    if (bst[i] == -1) { bst[i] = val; return; }
+    if (val < bst[i]) insert(2*i + 1, val);
+    else insert(2*i + 2, val);
+}
+
+void inorder(int i) {
+    if (i >= SIZE || bst[i] == -1) return;
+    inorder(2*i + 1);
+    printf("%d ", bst[i]);
+    inorder(2*i + 2);
+}
+
+int search(int i, int val) {
+    if (i >= SIZE || bst[i] == -1) return -1;
+    if (bst[i] == val) return i;
+    if (val < bst[i]) return search(2*i + 1, val);
+    return search(2*i + 2, val);
+}
+
+void delete(int i, int val) {
+    int idx = search(i, val);
+    if (idx != -1) bst[idx] = -1; // simple delete (breaks BST rule)
+}
+
+int main() {
+    insert(0, 50); insert(0, 30); insert(0, 70);
+    insert(0, 20); insert(0, 40); insert(0, 60);
+    inorder(0);
+    printf("\nFound at: %d\n", search(0, 40));
+    delete(0, 30);
+    inorder(0);
+    return 0;
+}
