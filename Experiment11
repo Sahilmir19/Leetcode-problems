@@ -1,0 +1,39 @@
+#include <stdio.h>
+#include <stdlib.h>
+
+typedef struct Node {
+    int data, priority;
+    struct Node* next;
+} Node;
+
+Node* front = NULL;
+
+void enqueue(int val, int prio) {
+    Node* temp = malloc(sizeof(Node));
+    temp->data = val; temp->priority = prio; temp->next = NULL;
+    if (!front || prio < front->priority) {
+        temp->next = front; front = temp;
+    } else {
+        Node* cur = front;
+        while (cur->next && cur->next->priority <= prio)
+            cur = cur->next;
+        temp->next = cur->next;
+        cur->next = temp;
+    }
+}
+
+int dequeue() {
+    if (!front) return -1;
+    int val = front->data;
+    Node* temp = front;
+    front = front->next;
+    free(temp);
+    return val;
+}
+
+int main() {
+    enqueue(30, 3); enqueue(10, 1); enqueue(20, 2);
+    printf("%d\n", dequeue()); // 10
+    printf("%d\n", dequeue()); // 20
+    return 0;
+}
