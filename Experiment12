@@ -1,0 +1,34 @@
+#include <stdio.h>
+#define SIZE 100
+
+int tree[SIZE], n = 0;
+
+void insert(int val) { tree[n++] = val; }
+
+void inorder(int i) {
+    if (i >= n) return;
+    inorder(2*i + 1);
+    printf("%d ", tree[i]);
+    inorder(2*i + 2);
+}
+
+int search(int val) {
+    for (int i = 0; i < n; i++)
+        if (tree[i] == val) return i;
+    return -1;
+}
+
+void delete(int val) {
+    int i = search(val);
+    if (i == -1) return;
+    tree[i] = tree[--n]; // Replace with last element
+}
+
+int main() {
+    insert(10); insert(20); insert(30); insert(40);
+    inorder(0); // Traversal
+    printf("\nFound at: %d\n", search(30));
+    delete(20);
+    inorder(0);
+    return 0;
+}
